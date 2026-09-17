@@ -3,7 +3,7 @@ import string
 
 def genarete_password(fields:dict) -> str:
     
-    password = ""
+    password : str = ""
     
     if not fields["password length"].strip().isdigit():
         print("Wrong length value!")
@@ -12,7 +12,7 @@ def genarete_password(fields:dict) -> str:
         
         
         
-    charecters = list(string.ascii_lowercase) + list(string.ascii_uppercase) + [f"{i}" for i in range(0,10)] + list(string.punctuation)
+    charecters : list[str] = list(string.ascii_lowercase) + list(string.ascii_uppercase) + [f"{i}" for i in range(0,10)] + list(string.punctuation)
     
     
     for charecter in range(0, int(fields["password length"])):

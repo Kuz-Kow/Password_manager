@@ -5,7 +5,7 @@ from passwords import *
 from genarete import genarete_password
 
 
-choices = {
+choices : dict [str , str]= {
         "1" : "Add password",
         "2" : "Show passwords",
         "3" : "Search password",
@@ -14,7 +14,7 @@ choices = {
         "6" : "Exit"
     }
 
-fields = {
+fields : dict[str , list[str]] = {
     "Add password": ["website", "username", "password"],
     "Search password" : ["website"],
     "Delete password" : ["website"],
@@ -24,7 +24,7 @@ fields = {
 def main() -> None:
     
     while True:
-        title = "PASSWORD MANAGER"
+        title : str = "PASSWORD MANAGER"
         print("="*len(title)*3)
         print(" "*len(title)+title)
         print("="*len(title)*3+"\n")
@@ -45,7 +45,7 @@ def main() -> None:
         
 def ask_fields(choice : str) -> dict:
     
-    inputs = {}
+    inputs : dict[str , str] = {}
     
     for field in fields[choices[choice]]:
         input_check = input(f"{field.title()}: ") 
@@ -57,8 +57,8 @@ def ask_fields(choice : str) -> dict:
     
             
             
-def do_option(choice: str):
-        data = decode_to_json()
+def do_option(choice: str) -> None:
+        data : dict [str , dict [str , str]] = decode_to_json()
         
         match choice:
             case "1":
@@ -67,7 +67,7 @@ def do_option(choice: str):
             case "2":
                 show_passwords(data)
             case "3":
-                result = search_password(data,ask_fields(choice))
+                result : dict[str , str] = search_password(data,ask_fields(choice))
                 
                 if result:
                     for key in result:
@@ -76,7 +76,7 @@ def do_option(choice: str):
             case "4":
                 encode_to_json(delete_password(data,ask_fields(choice)))
             case "5":
-                password = genarete_password(ask_fields(choice))
+                password : str = genarete_password(ask_fields(choice))
                 print(f"\nGenerated Password: {password}")
             case "6":
                 encode_to_json(data)
