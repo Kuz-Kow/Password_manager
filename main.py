@@ -3,9 +3,10 @@ import sys
 from storage import decode_to_json, encode_to_json
 from passwords import *
 from genarete import genarete_password
+from typing import NoReturn
+from passwords import FieldDict, PasswordDict
 
-
-choices : dict [str , str]= {
+choices : FieldDict= {
         "1" : "Add password",
         "2" : "Show passwords",
         "3" : "Search password",
@@ -21,7 +22,10 @@ fields : dict[str , list[str]] = {
     "Generate password" : ["password length"]
 }
 
-def main() -> None:
+def main() -> NoReturn:
+    '''
+    Main function which handles menu in conso;
+    '''
     
     while True:
         title : str = "PASSWORD MANAGER"
@@ -44,7 +48,7 @@ def main() -> None:
         
         
 def ask_fields(choice : str) -> dict:
-    
+    '''Asks fields for functions'''
     inputs : dict[str , str] = {}
     
     for field in fields[choices[choice]]:
@@ -58,31 +62,33 @@ def ask_fields(choice : str) -> dict:
             
             
 def do_option(choice: str) -> None:
-        data : dict [str , dict [str , str]] = decode_to_json()
-        
-        match choice:
-            case "1":
-                data.update(add_password(ask_fields(choice)))
-                encode_to_json(data)
-            case "2":
-                show_passwords(data)
-            case "3":
-                result : dict[str , str] = search_password(data,ask_fields(choice))
-                
-                if result:
-                    for key in result:
-                                print(f"\nWebsite: {key}")
-                                print_fields(data[key])
-            case "4":
-                encode_to_json(delete_password(data,ask_fields(choice)))
-            case "5":
-                password : str = genarete_password(ask_fields(choice))
-                print(f"\nGenerated Password: {password}")
-            case "6":
-                encode_to_json(data)
-                sys.exit("Good bye!")
-        
-        input("Press Enter to continue")
+    '''Handles calling function for all menu options'''
+    
+    data : PasswordDict = decode_to_json()
+    
+    match choice:
+        case "1":
+            data.update(add_password(ask_fields(choice)))
+            encode_to_json(data)
+        case "2":
+            show_passwords(data)
+        case "3":
+            result : PasswordDict | dict[Never, Never] = search_password(data,ask_fields(choice))
+            
+            if result:
+                for key in result:
+                            print(f"\nWebsite: {key}")
+                            print_fields(data[key])
+        case "4":
+            encode_to_json(delete_password(data,ask_fields(choice)))
+        case "5":
+            password : str = genarete_password(ask_fields(choice))
+            print(f"\nGenerated Password: {password}")
+        case "6":
+            encode_to_json(data)
+            sys.exit("Good bye!")
+    
+    input("Press Enter to continue")
             
         
     
